@@ -1,7 +1,5 @@
 #!/bin/bash
 
-WORK_DIR=$(dirname -- "$(readlink -f -- "$0")")
-
 # Install script dependencies
 install_script_dependencies() {
     echo "$ apt update" && sudo -k apt update && echo -e -n "\n"
@@ -9,7 +7,7 @@ install_script_dependencies() {
 }
 
 # Find or temp-install gum
-find_install_gum() {
+find_gum() {
     GUM=$(whereis -b gum | awk '{print $2}')
     if [ -z "$GUM" ]; then
         echo "Gum not found, installing temporarly"
@@ -88,13 +86,22 @@ install_project() {
 
 # End
 end() {
-    $GUM style --foreground 121 --border double --align center --width 50 --margin "1 2" --padding "2 4" 'Aseprite was installed.' 'It is now safe to delete aseprite-build.'
+    $GUM style --foreground 121 --border double --align center --width 50 --margin "1 2" --padding "2 4" 'Aseprite was installed.' 'It is now safe to delete aseprite-builder.'
 }
 
-# Exit on error
+# ------------------- Script starts here ------------------- #
+
 set -e
+
+WORK_DIR=$(dirname -- "$(readlink -f -- "$0")")
+
+echo "Aseprite builder"
+echo ""
+echo "By emmaexe"
+echo ""
+
 install_script_dependencies
-find_install_gum
+find_gum
 find_latest_release_url
 download_project
 install_build_dependencies
